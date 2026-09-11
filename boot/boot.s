@@ -28,7 +28,6 @@ _start:
 // set stack and call kernel
 mov $stack_top, %esp
 call kernel_main
-//TODO: if kernel_main has interupts off remove cli 
 cli
 1: hlt
 jmp 1b
