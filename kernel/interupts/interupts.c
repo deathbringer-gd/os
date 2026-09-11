@@ -1,8 +1,6 @@
 #include <stdint.h>
 #include "interupts.h"
 #include "terminal.h"
-#include "idt_load.asm"
-#include "default_interupt_handler.asm"
 
 struct idt_entry {
     uint16_t offset_low;
@@ -33,10 +31,10 @@ static void idt_set_gate(uint8_t number, uint32_t handler) {
 
 void init_interupts(void) {
     for (int i = 0; i < 256; i++) {
-        idt_set_gate(i, (uint32_t)default_interupt_handler);
+        idt_set_gate(i, (uint32_t)default_interupt_handler); //TODO: sets every interupt to default_interupt_handler. In the future this needs updating for specific interupts. 
     }
     
-    idtr.limit = sizeof(struct idt_entry) * 256 - 1;
+    idtr.limit = sizeof(idt) - 1;
     idtr.base = (uint32_t)&idt;
     idt_load((uint32_t)&idtr);
 }
