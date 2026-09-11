@@ -21,6 +21,7 @@ struct idtr {
 static struct idt_entry idt[256];
 static struct idtr idtr;
 extern void idt_load(uint32_t idtr_adress);
+extern void default_interupt_handler(void);
 
 static void idt_set_gate(uint8_t number, uint32_t handler) {
     idt[number].offset_low = (uint16_t)(handler & 0xFFFF);
@@ -32,7 +33,7 @@ static void idt_set_gate(uint8_t number, uint32_t handler) {
 
 void init_interupts(void) {
     for (int i = 0; i < 256; i++) {
-        idt_set_gate(i, (uint32_t)default_interupts_handler);
+        idt_set_gate(i, (uint32_t)default_interupt_handler);
     }
     
     idtr.limit = sizeof(struct idt_entry) * 256 - 1;
