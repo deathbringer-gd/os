@@ -76,3 +76,6 @@ void terminal_clear(void) {
     terminal_column = 0;
     terminal_row = 0;
 }
+
+void terminal_scroll(void) {
+}
