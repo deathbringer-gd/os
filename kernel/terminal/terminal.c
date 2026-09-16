@@ -4,13 +4,16 @@
 
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
+#define TERMINAL_HEIGHT 1000
 #define VGA_MEMORY 0xB8000
 
 static size_t terminal_row;
 static size_t terminal_column;
+static size_t terminal_scroll_offset;
 static uint8_t terminal_colour;
 
 static volatile uint16_t* terminal_buffer = (volatile uint16_t*)VGA_MEMORY;
+static uint16_t termminal_history[TERMINAL_HEIGHT][VGA_WIDTH];
 
 
 void terminal_initialize(void) {
@@ -34,11 +37,13 @@ void terminal_putchar(char c) {
         terminal_row++;
 
         if (terminal_row == VGA_HEIGHT) {
-            terminal_row = 0;
+            terminal_scroll_offset++;
+            terminal_render()
+            terminal_row++;
         }
     }
     
-    if (c == "\n") {
+    if (c == '\n') {
         terminal_column = 0;
         terminal_row++;
     }
@@ -55,7 +60,7 @@ void terminal_write_string(const char* data) {
 
     size_t length = 0;
 
-    while (data[length] != "0/") {
+    while (data[length] != '0/') {
         length++;
     }
     
@@ -69,7 +74,7 @@ void terminal_clear(void) {
 
             size_t index = y * VGA_WIDTH + x;
 
-            terminal_buffer[index] = ((uint16_t)terminal_colour << 8) | ' ';
+            terminal_buffer[index] = ((uint16_t)terminal_colour << 8) | (uint8_t)' ';
         }
     }
 
@@ -77,5 +82,9 @@ void terminal_clear(void) {
     terminal_row = 0;
 }
 
-void terminal_scroll(void) {
+void terminal_render(void) {
+    for (size_t y = 0; y < VGA_HEIGHT; y++) {
+        for (size_t x = 0; x < VGA_WIDTH; x++)
+            terminal_buffer[y * VGA_WIDTH + x] = termminal_history[terminal_scroll_offset + y][x];
+    }
 }

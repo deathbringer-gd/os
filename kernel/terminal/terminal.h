@@ -9,5 +9,6 @@ void terminal_putchar(char c);
 void terminal_write(const char* data, size_t size);
 void terminal_write_string(const char* data);
 void terminal_clear(void);
+void terminal_render(void);
 
 #endif
