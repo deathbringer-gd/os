@@ -38,7 +38,7 @@ void terminal_putchar(char c) {
 
         if (terminal_row == VGA_HEIGHT) {
             terminal_scroll_offset++;
-            terminal_render()
+            terminal_render();
             terminal_row++;
         }
     }
