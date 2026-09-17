@@ -40,6 +40,10 @@ void terminal_putchar(char c) {
             terminal_scroll_offset++;
             terminal_render();
             terminal_row++;
+
+            if (terminal_scroll_offset == TERMINAL_HEIGHT - VGA_HEIGHT) {
+                terminal_scroll_offset = 0; //TODO: change soon to proper max line handling
+            }
         }
     }
     
