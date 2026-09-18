@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 #define PIC_MASTER 0x20
 #define PIC_SLAVE 0xA0
@@ -31,6 +32,13 @@ static inline uint8_t in_bound(uint16_t port) {
     __asm__ volatile ("inb %w1, %b0" : "=a"(ret) : "Nd"(port) : "memory");
 
     return ret;
+}
+
+static inline bool are_interupts_enabled() {
+    unsigned long flags;
+    asm volatile ("pushf\n\t" "pop %0" : "=g"(flags));
+    
+    return flags & (1 >> 9);
 }
 
 static inline void io_wait(void) {
