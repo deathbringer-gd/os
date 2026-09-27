@@ -13,5 +13,6 @@ scancode set 3 - 0x3F
 #define GET_SET_CURRENT_SCANCODE 0xF0
 #define ECHO 0xEE // response 0xEE = echo, good for device removal detection and diagnostics
 #define IDENTIFY_KEYBOARD 0xF2 // response ACK then sometimes more ID bytes
-#define ENABLE_SCANNING 0xF3 // enables keyboard sending scancodes
-#
+#define 
+#define ENABLE_SCANNING 0xF4 // enables keyboard sending scancodes
+#define ENABLE_SCANNING 0xF5
