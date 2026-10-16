@@ -2,7 +2,7 @@
 #define PIC_H
 
 #include <stdint.h>
-#include <stddef.h>
+#include <stdbool.h>
 
 void init_pic(int offset1, int offset2);
 static void inline out_bound(uint16_t port, uint8_t value);

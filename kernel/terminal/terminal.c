@@ -64,7 +64,7 @@ void terminal_write_string(const char* data) {
 
     size_t length = 0;
 
-    while (data[length] != '0/') {
+    while (data[length] != '\0') {
         length++;
     }
     
@@ -88,7 +88,25 @@ void terminal_clear(void) {
 
 void terminal_render(void) {
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
+
         for (size_t x = 0; x < VGA_WIDTH; x++)
+
             terminal_buffer[y * VGA_WIDTH + x] = termminal_history[terminal_scroll_offset + y][x];
+    }
+}
+
+void terminal_backspace(void) {
+    if (terminal_column > 0) {
+
+        terminal_column--;
+
+        terminal_buffer[terminal_row * VGA_WIDTH + terminal_column] = ((uint16_t)terminal_colour << 8) | ' ';
+    }
+}
+
+static void terminal_clear_line(size_t y) {
+    for (size_t x = 0; x < VGA_WIDTH; x++) {
+        
+        terminal_buffer[y * VGA_WIDTH + x] = ((uint16_t)terminal_colour << 8) | ' ';
     }
 }

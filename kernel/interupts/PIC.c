@@ -71,7 +71,7 @@ static inline bool are_interupts_enabled(void) {
 }
 
 static inline void io_wait(void) {
-    outb(0x80, 0);
+    out_bound(0x80, 0);
 }
 
 static inline void lidt(void* base, uint16_t size) {
