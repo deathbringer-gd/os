@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 void init_pic(int offset1, int offset2);
-static void inline out_bound(uint16_t port, uint8_t value);
+static inline void out_bound(uint16_t port, uint8_t value);
 static inline uint8_t in_bound(uint16_t port);
 static inline void io_wait(void);
 void pic_send_end_of_interupt(uint8_t irq);

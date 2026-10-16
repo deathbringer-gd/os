@@ -3,7 +3,7 @@
 .global default_interupt_handler
 .type default_interupt_handler, @function
 
-default_interrupt_handler:
+default_interupt_handler:
     cli
 
 1:

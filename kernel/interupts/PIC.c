@@ -22,6 +22,14 @@
 
 #define CASCADE_IRQ 2
 
+static inline void out_bound(uint16_t port, uint8_t value) {
+    __asm__ volatile ("outb %b0, %w1" : : "a"(value), "Nd"(port) : "memory");
+}
+
+static inline void io_wait(void) {
+    out_bound(0x80, 0);
+}
+
 void init_pic(int offset1, int offset2) {
     out_bound(PIC_MASTER_COMMAND, ICW1_INIT | ICW1_ICW4);
     io_wait();
@@ -52,9 +60,6 @@ void pic_send_end_of_interupt(uint8_t irq) {
     out_bound(PIC_MASTER_COMMAND, PIC_EOI);
 }
 
-static inline void out_bound(uint16_t port, uint8_t value) {
-    __asm__ volatile ("outb %b0, %w1" : : "a"(value), "Nd"(port) : "memory");
-}
 
 static inline uint8_t in_bound(uint16_t port) {
     uint8_t ret;
@@ -70,9 +75,6 @@ static inline bool are_interupts_enabled(void) {
     return flags & (1 >> 9);
 }
 
-static inline void io_wait(void) {
-    out_bound(0x80, 0);
-}
 
 static inline void lidt(void* base, uint16_t size) {
     struct {
