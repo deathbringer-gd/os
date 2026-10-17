@@ -23,7 +23,7 @@
 #define CASCADE_IRQ 2
 
 static inline void out_bound(uint16_t port, uint8_t value) {
-    __asm__ volatile ("outb %b0, %w1" : : "a"(value), "Nd"(port) : "memory");
+    __asm__ volatile ("out_bound %b0, %w1" : : "a"(value), "Nd"(port) : "memory");
 }
 
 static inline void io_wait(void) {
@@ -63,7 +63,7 @@ void pic_send_end_of_interupt(uint8_t irq) {
 
 static inline uint8_t in_bound(uint16_t port) {
     uint8_t ret;
-    __asm__ volatile ("inb %w1, %b0" : "=a"(ret) : "Nd"(port) : "memory");
+    __asm__ volatile ("in_bound %w1, %b0" : "=a"(ret) : "Nd"(port) : "memory");
 
     return ret;
 }
@@ -72,7 +72,7 @@ static inline bool are_interupts_enabled(void) {
     unsigned long flags;
     asm volatile ("pushf\n\t" "pop %0" : "=g"(flags));
     
-    return flags & (1 >> 9);
+    return flags & (1 << 9);
 }
 
 
